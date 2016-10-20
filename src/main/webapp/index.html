@@ -2,11 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HomePage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZNK</title>
+
+    <!-- CSS -->
+    <link href="assets/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
+
+    <!-- Libraries -->
+    <script src="assets/jquery/dist/jquery.js"></script>
+    <script src="assets/angular/angular.js"></script>
+    <script src="assets/angular-resource/angular-resource.js"></script>
+    <script src="assets/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="assets/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="app/app.module.js"></script>
+    <script src="app/config/state.handler.js"></script>
+    <script src="app/user/user.service.js"></script>
+    <script src="app/home/home.state.js"></script>
+    <script src="app/home/home.controller.js"></script>
+    <script src="app/navbar/navbar.controller.js"></script>
+    <script src="app/app.state.js"></script>
+
 </head>
-<body>
 
-<h3>Zapisy na konsultacje</h3>
+<body ng-app="znk" ng-strict-di>
+<div ui-view="navbar"></div>
 
+<div ui-view="content"></div>
 </body>
 </html>
