@@ -5,39 +5,32 @@
         .module('znk')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$scope', '$state', 'User'];
+    NavbarController.$inject = ['$rootScope', '$scope', '$state', 'User'];
 
-    function NavbarController ($scope, $state, User) {
-        $scope.login = login;
+    function NavbarController ($rootScope, $scope, $state, User) {
         $scope.logout = logout;
         $scope.isAuthenticated = isAuthenticated;
 
         $scope.$state = $state;
-        $scope.user = null;
-        $scope.boards = null;
 
-        function login() {
-            User.get({id : "1"}, onSuccess, onError);
+        loadIfSaveInStorage();
 
-            function onSuccess(data) {
-                console.log('User ' + data.login + ' logged in');
-                $scope.user = data;
-                localStorage.setItem('user', data);
-            }
-
-            function onError() {
-                console.log('Error while loading user');
+        function loadIfSaveInStorage() {
+            var loggedUserJSON = sessionStorage.getItem('user');
+            if (loggedUserJSON != null) {
+                $rootScope.user = JSON.parse(loggedUserJSON);
             }
         }
 
         function logout() {
-            console.log('User ' + $scope.user.login + ' logged out');
-            $scope.user = null;
+            console.log('User ' + $rootScope.user.login + ' logged out');
+            $rootScope.user = null;
+            sessionStorage.removeItem('user');
             localStorage.removeItem('user');
         }
 
         function isAuthenticated() {
-            return $scope.user != null;
+            return $rootScope.user != null;
         }
     }
 })();
