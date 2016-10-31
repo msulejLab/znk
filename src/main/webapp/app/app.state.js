@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('znk')
+        .module('znkApp')
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];
@@ -12,10 +12,18 @@
             abstract: true,
             views: {
                 'navbar@': {
-                    templateUrl: '/app/navbar/navbar.html',
+                    templateUrl: 'app/layouts/navbar/navbar.html',
                     controller: 'NavbarController',
+                    controllerAs: 'vm'
                 }
+            },
+            resolve: {
+                authorize: ['Auth',
+                    function (Auth) {
+                        return Auth.authorize();
+                    }
+                ]
             }
-        })
+        });
     }
 })();
