@@ -1,0 +1,52 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myConsultationLabel">Create or edit a Consultation</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.consultation.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.consultation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateTime">Date Time</label>
+                <div class="input-group">
+                    <input id="field_dateTime" type="text" class="form-control" name="dateTime" datetime-picker="{{dateformat}}" ng-model="vm.consultation.dateTime" is-open="vm.datePickerOpenStatus.dateTime"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateTime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_cancelled">Cancelled</label>
+            <input type="checkbox" class="form-control" name="cancelled" id="field_cancelled"
+                    ng-model="vm.consultation.cancelled"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label for="field_teacher">Teacher</label>
+            <select class="form-control" id="field_teacher" name="teacher" ng-model="vm.consultation.teacherId" ng-options="user.id as user.login for user in vm.users"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_registeredStudents">Registered Students</label>
+            <select class="form-control" id="field_registeredStudents" multiple name="registeredStudents" ng-model="vm.consultation.registeredStudents" ng-options="user as user. for user in vm.users track by user.id"></select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

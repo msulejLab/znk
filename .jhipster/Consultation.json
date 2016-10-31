@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "teacher",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "login",
+            "ownerSide": true
+        },
+        {
+            "relationshipName": "registeredStudents",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-many",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "dateTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "cancelled",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20161031130328",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "consultation",
+    "pagination": "pagination"
+}

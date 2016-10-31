@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Mapper for the entity User and its DTO UserDTO.
  */
+
 @Mapper(componentModel = "spring", uses = {})
 public interface UserMapper {
 
