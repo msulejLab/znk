@@ -19,6 +19,10 @@
                 <strong>E-mail is already in use!</strong> Please choose another one.
             </div>
 
+            <div class="alert alert-danger" ng-show="vm.errorWrongDomain">
+                <strong>Wrong email domain!</strong> Email must be within domain edu.p.lodz.pl
+            </div>
+
             <div class="alert alert-danger" ng-show="vm.doNotMatch">
                 The password and its confirmation do not match!
             </div>

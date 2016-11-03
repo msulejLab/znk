@@ -58,9 +58,12 @@ public class AccountResource {
                     produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
     public ResponseEntity<?> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) {
-
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+        if (!managedUserVM.getEmail().endsWith("@edu.p.lodz.pl")) {
+            return new ResponseEntity<>("wrong email domain", textPlainHeaders, HttpStatus.BAD_REQUEST);
+        }
 
         return userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase())
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
