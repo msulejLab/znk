@@ -1,9 +1,9 @@
 <div>
     <h2>Consultations</h2>
     <jhi-alert></jhi-alert>
-    <div class="container-fluid" has-authority="ROLE_TEACHER">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-4 no-padding-left">
+            <div class="col-xs-4 no-padding-left" has-any-authority="ROLE_TEACHER,ROLE_ADMIN">
                 <button class="btn btn-primary" ui-sref="consultation.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span>

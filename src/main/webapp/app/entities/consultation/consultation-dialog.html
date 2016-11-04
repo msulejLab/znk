@@ -24,21 +24,8 @@
                 </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_cancelled">Cancelled</label>
-            <input type="checkbox" class="form-control" name="cancelled" id="field_cancelled"
-                    ng-model="vm.consultation.cancelled"
-                     />
-        </div>
-
-        <div class="form-group">
-            <label for="field_teacher">Teacher</label>
-            <select class="form-control" id="field_teacher" name="teacher" ng-model="vm.consultation.teacherId" ng-options="user.id as user.login for user in vm.users"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="field_registeredStudents">Registered Students</label>
-            <select class="form-control" id="field_registeredStudents" multiple name="registeredStudents" ng-model="vm.consultation.registeredStudents" ng-options="user as user. for user in vm.users track by user.id"></select>
+            <label class="control-label" for="description">Description</label>
+            <textarea id="description" name="description" row="4" col="25" class="description-field"></textarea>
         </div>
     </div>
     <div class="modal-footer">
