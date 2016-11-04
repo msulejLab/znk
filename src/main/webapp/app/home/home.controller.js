@@ -18,12 +18,6 @@
             getAccount();
         });
 
-        vm.links = [
-            {url: '#', description: 'Zapisy na konsultację'},
-            {url: '#', description: 'Szukanie nauczycieli'},
-            {url: '#', description: 'Zarządzanie konsultacjami'}
-        ];
-
         getAccount();
 
         function getAccount() {
