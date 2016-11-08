@@ -114,13 +114,24 @@ public class UserService {
         } else {
             user.setLangKey(managedUserVM.getLangKey());
         }
+
+        Set<Authority> authorities = new HashSet<>();
         if (managedUserVM.getAuthorities() != null) {
-            Set<Authority> authorities = new HashSet<>();
             managedUserVM.getAuthorities().stream().forEach(
                 authority -> authorities.add(authorityRepository.findOne(authority))
             );
             user.setAuthorities(authorities);
+        } else {
+            authorities.add(authorityRepository.findOne("ROLE_USER"));
+
+            if (managedUserVM.getEmail().endsWith("@edu.p.lodz.pl")) {
+                authorities.add(authorityRepository.findOne("ROLE_STUDENT"));
+            } else
+            if (managedUserVM.getEmail().endsWith("@p.lodz.pl")) {
+                    authorities.add(authorityRepository.findOne("ROLE_TEACHER"));
+            }
         }
+
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());

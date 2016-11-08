@@ -1,5 +1,7 @@
 package pl.lab.znk;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import pl.lab.znk.config.Constants;
 import pl.lab.znk.config.DefaultProfileUtil;
 import pl.lab.znk.config.JHipsterProperties;
@@ -13,13 +15,21 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import pl.lab.znk.domain.Authority;
+import pl.lab.znk.domain.User;
+import pl.lab.znk.repository.AuthorityRepository;
+import pl.lab.znk.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+
+import static pl.lab.znk.security.AuthoritiesConstants.*;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
@@ -50,6 +60,57 @@ public class ZnkApp {
             log.error("You have misconfigured your application! It should not" +
                 "run with both the 'dev' and 'cloud' profiles at the same time.");
         }
+    }
+
+    @Bean
+    public CommandLineRunner initApplicationData(AuthorityRepository authorityRepository, UserRepository userRepository) {
+        return (args -> {
+            Authority anonAuth = new Authority(ANONYMOUS);
+            Authority adminAuth = new Authority(ADMIN);
+            Authority userAuth = new Authority(USER);
+            Authority teacherAuth = new Authority(TEACHER);
+            Authority studentAuth = new Authority(STUDENT);
+
+            Arrays.asList(anonAuth, adminAuth, userAuth, teacherAuth, studentAuth).forEach(authority ->
+                authorityRepository.save(authority)
+            );
+
+            User anon = new User();
+            anon.setAuthorities(new HashSet<>(Arrays.asList(anonAuth)));
+            anon.setLogin("anonymoususer");
+            anon.setPassword("$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG");
+            anon.setActivated(true);
+            anon.setCreatedDate(ZonedDateTime.now());
+            anon.setCreatedBy("system");
+            userRepository.save(anon);
+
+            User system = new User();
+            system.setAuthorities(new HashSet<>(Arrays.asList(adminAuth, userAuth)));
+            system.setLogin("system");
+            system.setPassword("$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG");
+            system.setActivated(true);
+            system.setCreatedDate(ZonedDateTime.now());
+            system.setCreatedBy("system");
+            userRepository.save(system);
+
+            User admin = new User();
+            admin.setAuthorities(new HashSet<>(Arrays.asList(adminAuth, userAuth)));
+            admin.setLogin("admin");
+            admin.setPassword("$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC");
+            admin.setActivated(true);
+            admin.setCreatedDate(ZonedDateTime.now());
+            admin.setCreatedBy("system");
+            userRepository.save(admin);
+
+            User user = new User();
+            user.setAuthorities(new HashSet<>(Arrays.asList(userAuth)));
+            user.setLogin("user");
+            user.setPassword("$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K");
+            user.setActivated(true);
+            user.setCreatedDate(ZonedDateTime.now());
+            user.setCreatedBy("system");
+            userRepository.save(user);
+        });
     }
 
     /**
