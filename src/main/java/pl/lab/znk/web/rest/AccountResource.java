@@ -61,7 +61,8 @@ public class AccountResource {
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-        if (!managedUserVM.getEmail().endsWith("@edu.p.lodz.pl")) {
+        if (!(managedUserVM.getEmail().toLowerCase().endsWith("@edu.p.lodz.pl") ||
+            managedUserVM.getEmail().toLowerCase().endsWith("@p.lodz.pl"))) {
             return new ResponseEntity<>("wrong email domain", textPlainHeaders, HttpStatus.BAD_REQUEST);
         }
 

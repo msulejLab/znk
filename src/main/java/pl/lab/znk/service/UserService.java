@@ -19,6 +19,8 @@ import java.time.ZonedDateTime;
 import javax.inject.Inject;
 import java.util.*;
 
+import static pl.lab.znk.security.AuthoritiesConstants.*;
+
 /**
  * Service class for managing users.
  */
@@ -82,8 +84,6 @@ public class UserService {
         String langKey) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
-        Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
         // new user gets initially a generated password
@@ -92,12 +92,19 @@ public class UserService {
         newUser.setLastName(lastName);
         newUser.setEmail(email);
         newUser.setLangKey(langKey);
-        // new user is not active
         newUser.setActivated(false);
-        // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authority);
+        newUser.setCreatedDate(ZonedDateTime.now());
+        newUser.setCreatedBy("system");
+        Authority authority = authorityRepository.findOne(USER);
+        Set<Authority> authorities = new HashSet<>();
         newUser.setAuthorities(authorities);
+        authorities.add(authority);
+        if (email.toLowerCase().endsWith("@edu.p.lodz.pl")) {
+            authorities.add(authorityRepository.findOne(STUDENT));
+        } else if (email.toLowerCase().endsWith("@p.lodz.pl")) {
+            authorities.add(authorityRepository.findOne(TEACHER));
+        }
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
