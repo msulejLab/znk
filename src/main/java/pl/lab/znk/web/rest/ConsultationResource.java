@@ -45,7 +45,7 @@ public class ConsultationResource {
     }
 
     @RequestMapping(value = "/consultations/{id}/book/{studentId}",
-        method = RequestMethod.POST,
+        method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
@@ -57,7 +57,7 @@ public class ConsultationResource {
     }
 
     @RequestMapping(value = "/consultations/{id}/unBook/{studentId}",
-            method = RequestMethod.POST,
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
