@@ -57,7 +57,7 @@ public class ConsultationResource {
     }
 
     @RequestMapping(value = "/consultations/{id}/unBook/{studentId}",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
