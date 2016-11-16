@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class ConsultationService {
 
     private final Logger log = LoggerFactory.getLogger(ConsultationService.class);
-    
+
     @Inject
     private ConsultationRepository consultationRepository;
 
@@ -59,7 +59,6 @@ public class ConsultationService {
         consultation.addRegisteredStudents(student);
         consultation = consultationRepository.save(consultation);
         ConsultationDTO result = consultationMapper.consultationToConsultationDTO(consultation);
-        System.out.println(result);
         return result;
     }
 
@@ -96,11 +95,11 @@ public class ConsultationService {
 
     /**
      *  Get all the consultations.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Page<ConsultationDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Consultations");
         Page<Consultation> result = consultationRepository.findAll(pageable);
@@ -113,7 +112,7 @@ public class ConsultationService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public ConsultationDTO findOne(Long id) {
         log.debug("Request to get Consultation : {}", id);
         Consultation consultation = consultationRepository.findOneWithEagerRelationships(id);
