@@ -33,6 +33,19 @@ public class ConsultationService {
     private UserService userService;
 
     /**
+     * Cancel consultation
+     * @param consultationId consultation id
+     * @return persisted entity
+     */
+    public ConsultationDTO makeCancelled(Long consultationId){
+        Consultation consultation = consultationRepository.findOneWithEagerRelationships(consultationId);
+        consultation.setCancelled(true);
+        consultation = consultationRepository.save(consultation);
+        ConsultationDTO result = consultationMapper.consultationToConsultationDTO(consultation);
+        return result;
+    }
+
+    /**
      * Book consultation by student
      *
      * @param consultationId consultation id
