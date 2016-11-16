@@ -38,6 +38,7 @@ public class ConsultationResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> makeCancelled(@PathVariable(name = "id") Long consultationId) throws URISyntaxException {
+        log.debug("REST request to cancel Consultation: {}", consultationId);
         ConsultationDTO result = consultationService.makeCancelled(consultationId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "/cancel"))
                 .headers(HeaderUtil.createEntityCreationAlert("consultation", result.getId().toString()))
@@ -49,7 +50,7 @@ public class ConsultationResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
-        log.debug("REST request to book Consultation: ", consultationId, "by student id: ", studentId);
+        log.debug("REST request to book Consultation: {} by student id: {}", consultationId, studentId);
         ConsultationDTO result = consultationService.bookConsultation(consultationId, studentId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "bookBy/" + studentId))
                 .headers(HeaderUtil.createEntityCreationAlert("consultation", result.getId().toString()))
@@ -61,7 +62,7 @@ public class ConsultationResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
-        log.debug("REST request to book Consultation: ", consultationId, "by student id: ", studentId);
+        log.debug("REST request to unBook Consultation: {} by student id: {}", consultationId, studentId);
         ConsultationDTO result = consultationService.unBookConsultation(consultationId, studentId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "bookBy/" + studentId))
                 .headers(HeaderUtil.createEntityCreationAlert("consultation", result.getId().toString()))

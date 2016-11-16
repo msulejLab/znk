@@ -38,6 +38,7 @@ public class ConsultationService {
      * @return persisted entity
      */
     public ConsultationDTO makeCancelled(Long consultationId){
+        log.debug("Request to cancel consultation id: {}", consultationId);
         Consultation consultation = consultationRepository.findOneWithEagerRelationships(consultationId);
         consultation.setCancelled(true);
         consultation = consultationRepository.save(consultation);
@@ -53,7 +54,7 @@ public class ConsultationService {
      * @return the persisted entity
      */
     public ConsultationDTO bookConsultation(Long consultationId, Long studentId){
-        log.debug("Request to book consultation", consultationId, "by student with id", studentId);
+        log.debug("Request to book consultation id: {}, by student id: {}", consultationId, studentId);
         Consultation consultation = consultationRepository.findOneWithEagerRelationships(consultationId);
         User student = userService.getUserById(studentId);
         consultation.addRegisteredStudents(student);
@@ -70,7 +71,7 @@ public class ConsultationService {
      * @return
      */
     public ConsultationDTO unBookConsultation(Long consultationId, Long studentId){
-        log.debug("Request to book consultation", consultationId, "by student with id", studentId);
+        log.debug("Request to unBook consultation id: {}, by student id: {}", consultationId, studentId);
         Consultation consultation = consultationRepository.findOneWithEagerRelationships(consultationId);
         User student = userService.getUserById(studentId);
         consultation.getRegisteredStudents().remove(student);
