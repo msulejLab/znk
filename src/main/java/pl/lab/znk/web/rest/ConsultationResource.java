@@ -29,12 +29,12 @@ import java.util.Optional;
 public class ConsultationResource {
 
     private final Logger log = LoggerFactory.getLogger(ConsultationResource.class);
-        
+
     @Inject
     private ConsultationService consultationService;
 
     @RequestMapping(value = "/consultations/{id}/cancel",
-        method = RequestMethod.GET,
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> makeCancelled(@PathVariable(name = "id") Long consultationId) throws URISyntaxException {
@@ -45,7 +45,7 @@ public class ConsultationResource {
     }
 
     @RequestMapping(value = "/consultations/{id}/book/{studentId}",
-        method = RequestMethod.GET,
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
