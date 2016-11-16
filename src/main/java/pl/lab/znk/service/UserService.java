@@ -1,23 +1,25 @@
 package pl.lab.znk.service;
 
-import pl.lab.znk.domain.Authority;
-import pl.lab.znk.domain.User;
-import pl.lab.znk.repository.AuthorityRepository;
-import pl.lab.znk.repository.UserRepository;
-import pl.lab.znk.security.AuthoritiesConstants;
-import pl.lab.znk.security.SecurityUtils;
-import pl.lab.znk.service.util.RandomUtil;
-import pl.lab.znk.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.lab.znk.domain.Authority;
+import pl.lab.znk.domain.User;
+import pl.lab.znk.repository.AuthorityRepository;
+import pl.lab.znk.repository.UserRepository;
+import pl.lab.znk.security.SecurityUtils;
+import pl.lab.znk.service.util.RandomUtil;
+import pl.lab.znk.web.rest.vm.ManagedUserVM;
 
-import java.time.ZonedDateTime;
 import javax.inject.Inject;
-import java.util.*;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static pl.lab.znk.security.AuthoritiesConstants.*;
 
@@ -38,6 +40,10 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
+
+    public User getUserById(Long userId){
+        return userRepository.findOne(userId);
+    }
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
