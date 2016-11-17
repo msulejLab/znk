@@ -14,13 +14,13 @@ public class ConsultationDTO implements Serializable {
 
     private Long id;
 
+    private String description;
+
     private ZonedDateTime dateTime;
 
     private Boolean cancelled;
 
-
     private Long teacherId;
-    
 
     private String teacherLogin;
 
@@ -73,33 +73,40 @@ public class ConsultationDTO implements Serializable {
         this.registeredStudents = users;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ConsultationDTO consultationDTO = (ConsultationDTO) o;
-
-        if ( ! Objects.equals(id, consultationDTO.id)) return false;
-
-        return true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConsultationDTO that = (ConsultationDTO) o;
+        return Objects.equals(id, that.id) &&
+            Objects.equals(description, that.description) &&
+            Objects.equals(dateTime, that.dateTime) &&
+            Objects.equals(cancelled, that.cancelled) &&
+            Objects.equals(teacherId, that.teacherId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, description, dateTime, cancelled, teacherId);
     }
 
     @Override
     public String toString() {
         return "ConsultationDTO{" +
             "id=" + id +
-            ", dateTime='" + dateTime + "'" +
-            ", cancelled='" + cancelled + "'" +
+            ", description='" + description + '\'' +
+            ", dateTime=" + dateTime +
+            ", cancelled=" + cancelled +
+            ", teacherId=" + teacherId +
+            ", teacherLogin='" + teacherLogin + '\'' +
             '}';
     }
 }

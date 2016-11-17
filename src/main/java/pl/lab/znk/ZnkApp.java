@@ -110,6 +110,24 @@ public class ZnkApp {
             user.setCreatedDate(ZonedDateTime.now());
             user.setCreatedBy("system");
             userRepository.save(user);
+
+            User teacher = new User();
+            teacher.setAuthorities(new HashSet<>(Arrays.asList(userAuth, teacherAuth)));
+            teacher.setLogin("teacher");
+            teacher.setPassword("$2a$10$TXxpw4xyNbbjZPGu0Qc1juDpHnIrTWte/S5i/qtvtITH7IUhX50Y6");
+            teacher.setActivated(true);
+            teacher.setCreatedDate(ZonedDateTime.now());
+            teacher.setCreatedBy("system");
+            userRepository.save(teacher);
+
+            User student = new User();
+            student.setAuthorities(new HashSet<>(Arrays.asList(studentAuth, studentAuth)));
+            student.setLogin("student");
+            student.setPassword("$2a$10$81A8zUpEgta4NvaG1Eqv5ua/WBp99vFxdVW8ky0A3MeaplcJVFSbC");
+            student.setActivated(true);
+            student.setCreatedDate(ZonedDateTime.now());
+            student.setCreatedBy("system");
+            userRepository.save(student);
         });
     }
 
