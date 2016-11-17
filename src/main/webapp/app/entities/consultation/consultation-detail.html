@@ -22,8 +22,8 @@
         </dd>
         <dt><span>Registered Students</span></dt>
         <dd>
-            <span ng-repeat="registeredStudents in vm.consultation.registeredStudents">
-                {{registeredStudents.}}{{$last ? '' : ', '}}
+            <span ng-repeat="registeredStudent in vm.consultation.registeredStudents">
+                {{registeredStudent.login}}{{$last ? '' : ', '}}
             </span>
         </dd>
     </dl>
