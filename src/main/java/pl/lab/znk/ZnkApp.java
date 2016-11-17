@@ -79,6 +79,7 @@ public class ZnkApp {
             anon.setAuthorities(new HashSet<>(Arrays.asList(anonAuth)));
             anon.setLogin("anonymoususer");
             anon.setPassword("$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG");
+            anon.setEmail("anonymoususer@localhost");
             anon.setActivated(true);
             anon.setCreatedDate(ZonedDateTime.now());
             anon.setCreatedBy("system");
@@ -88,6 +89,7 @@ public class ZnkApp {
             system.setAuthorities(new HashSet<>(Arrays.asList(adminAuth, userAuth)));
             system.setLogin("system");
             system.setPassword("$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG");
+            system.setEmail("system@localhost");
             system.setActivated(true);
             system.setCreatedDate(ZonedDateTime.now());
             system.setCreatedBy("system");
@@ -97,6 +99,7 @@ public class ZnkApp {
             admin.setAuthorities(new HashSet<>(Arrays.asList(adminAuth, userAuth)));
             admin.setLogin("admin");
             admin.setPassword("$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC");
+            admin.setEmail("admin@localhost");
             admin.setActivated(true);
             admin.setCreatedDate(ZonedDateTime.now());
             admin.setCreatedBy("system");
@@ -106,6 +109,7 @@ public class ZnkApp {
             user.setAuthorities(new HashSet<>(Arrays.asList(userAuth)));
             user.setLogin("user");
             user.setPassword("$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K");
+            user.setEmail("email@localhost");
             user.setActivated(true);
             user.setCreatedDate(ZonedDateTime.now());
             user.setCreatedBy("system");
@@ -115,6 +119,7 @@ public class ZnkApp {
             teacher.setAuthorities(new HashSet<>(Arrays.asList(userAuth, teacherAuth)));
             teacher.setLogin("teacher");
             teacher.setPassword("$2a$10$TXxpw4xyNbbjZPGu0Qc1juDpHnIrTWte/S5i/qtvtITH7IUhX50Y6");
+            teacher.setEmail("teacher@p.lodz.pl");
             teacher.setActivated(true);
             teacher.setCreatedDate(ZonedDateTime.now());
             teacher.setCreatedBy("system");
@@ -124,6 +129,7 @@ public class ZnkApp {
             student.setAuthorities(new HashSet<>(Arrays.asList(studentAuth, studentAuth)));
             student.setLogin("student");
             student.setPassword("$2a$10$81A8zUpEgta4NvaG1Eqv5ua/WBp99vFxdVW8ky0A3MeaplcJVFSbC");
+            student.setEmail("student@edu.p.lodz.pl");
             student.setActivated(true);
             student.setCreatedDate(ZonedDateTime.now());
             student.setCreatedBy("system");

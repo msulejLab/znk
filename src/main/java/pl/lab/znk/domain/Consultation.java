@@ -132,6 +132,8 @@ public class Consultation implements Serializable {
             ", description='" + description + '\'' +
             ", dateTime=" + dateTime +
             ", cancelled=" + cancelled +
+            ", teacher=" + teacher +
+            ", registeredStudents=" + registeredStudents +
             '}';
     }
 
@@ -143,11 +145,13 @@ public class Consultation implements Serializable {
         return Objects.equals(id, that.id) &&
             Objects.equals(description, that.description) &&
             Objects.equals(dateTime, that.dateTime) &&
-            Objects.equals(cancelled, that.cancelled);
+            Objects.equals(cancelled, that.cancelled) &&
+            Objects.equals(teacher, that.teacher) &&
+            Objects.equals(registeredStudents, that.registeredStudents);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, dateTime, cancelled);
+        return Objects.hash(id, description, dateTime, cancelled, teacher, registeredStudents);
     }
 }

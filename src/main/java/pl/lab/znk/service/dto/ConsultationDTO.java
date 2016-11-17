@@ -16,7 +16,7 @@ public class ConsultationDTO implements Serializable {
 
     private String description;
 
-    private ZonedDateTime dateTime;
+    private String dateTime;
 
     private Boolean cancelled;
 
@@ -33,13 +33,15 @@ public class ConsultationDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    public ZonedDateTime getDateTime() {
+
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(ZonedDateTime dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
+
     public Boolean getCancelled() {
         return cancelled;
     }
@@ -69,8 +71,8 @@ public class ConsultationDTO implements Serializable {
         return registeredStudents;
     }
 
-    public void setRegisteredStudents(Set<UserDTO> users) {
-        this.registeredStudents = users;
+    public void setRegisteredStudents(Set<UserDTO> registeredStudents) {
+        this.registeredStudents = registeredStudents;
     }
 
     public String getDescription() {
@@ -103,10 +105,11 @@ public class ConsultationDTO implements Serializable {
         return "ConsultationDTO{" +
             "id=" + id +
             ", description='" + description + '\'' +
-            ", dateTime=" + dateTime +
+            ", dateTime='" + dateTime + '\'' +
             ", cancelled=" + cancelled +
             ", teacherId=" + teacherId +
             ", teacherLogin='" + teacherLogin + '\'' +
+            ", registeredStudents=" + registeredStudents +
             '}';
     }
 }

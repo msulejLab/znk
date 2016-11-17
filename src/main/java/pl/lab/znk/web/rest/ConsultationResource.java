@@ -49,7 +49,8 @@ public class ConsultationResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
+    public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable(name = "id") Long consultationId,
+                                                            @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
         log.debug("REST request to book Consultation: {} by student id: {}", consultationId, studentId);
         ConsultationDTO result = consultationService.bookConsultation(consultationId, studentId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "bookBy/" + studentId))
@@ -61,7 +62,8 @@ public class ConsultationResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable(name = "id") Long consultationId, @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
+    public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable(name = "id") Long consultationId,
+                                                              @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
         log.debug("REST request to unBook Consultation: {} by student id: {}", consultationId, studentId);
         ConsultationDTO result = consultationService.unBookConsultation(consultationId, studentId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "bookBy/" + studentId))
