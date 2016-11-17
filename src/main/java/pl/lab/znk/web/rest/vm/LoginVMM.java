@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 /**
  * View Model object for storing a user's credentials.
  */
-public class LoginVM {
+public class LoginVMM {
 
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @NotNull
@@ -47,7 +47,7 @@ public class LoginVM {
 
     @Override
     public String toString() {
-        return "LoginVM{" +
+        return "LoginVMM{" +
             "password='*****'" +
             ", username='" + username + '\'' +
             ", rememberMe=" + rememberMe +
