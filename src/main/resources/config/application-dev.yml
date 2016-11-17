@@ -29,7 +29,7 @@ spring:
         password:
     h2:
         console:
-            enabled: false
+            enabled: true
     jpa:
         database-platform: pl.lab.znk.domain.util.FixedH2Dialect
         database: H2
