@@ -21,6 +21,9 @@ public class Consultation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "date_time")
     private ZonedDateTime dateTime;
 
@@ -106,32 +109,45 @@ public class Consultation implements Serializable {
         this.registeredStudents = users;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Consultation consultation = (Consultation) o;
-        if(consultation.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, consultation.id);
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getCancelled() {
+        return cancelled;
     }
 
     @Override
     public String toString() {
         return "Consultation{" +
             "id=" + id +
-            ", dateTime='" + dateTime + "'" +
-            ", cancelled='" + cancelled + "'" +
+            ", description='" + description + '\'' +
+            ", dateTime=" + dateTime +
+            ", cancelled=" + cancelled +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Consultation that = (Consultation) o;
+        return Objects.equals(id, that.id) &&
+            Objects.equals(description, that.description) &&
+            Objects.equals(dateTime, that.dateTime) &&
+            Objects.equals(cancelled, that.cancelled);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, dateTime, cancelled);
     }
 }
