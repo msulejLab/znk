@@ -49,7 +49,6 @@ public class UserDTO {
 
     public UserDTO(String login, String firstName, String lastName,
         String email, boolean activated, String langKey, Set<String> authorities) {
-
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;

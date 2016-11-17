@@ -22,11 +22,29 @@
         </dd>
         <dt><span>Registered Students</span></dt>
         <dd>
-            <span ng-repeat="registeredStudent in vm.consultation.registeredStudents">
-                {{registeredStudent.login}}{{$last ? '' : ', '}}
-            </span>
+            <ul class="list-group">
+                <li class="list-group-item" ng-class="student.login === vm.account.login? 'self-account' : ''"
+                    ng-repeat="student in vm.consultation.registeredStudents">
+                    {{student.login}}
+                </li>
+            </ul>
         </dd>
     </dl>
+
+    <div class="col-xs-8">
+        <div class="alert alert-success" ng-if="vm.success !== null">
+            <strong>{{vm.success}}</strong>
+        </div>
+        <div class="alert alert-danger" ng-if="vm.error !== null">
+            <strong>{{vm.error}}</strong>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div style="margin-bottom: 40px;" ng-switch="vm.isBookedIn()">
+        <button ng-switch-when="false" type="button" ng-click="vm.bookIn()" class="btn btn-success">Book in</button>
+        <button ng-switch-when="true" type="button" ng-click="vm.bookOut()" class="btn btn-danger">Book out</button>
+    </div>
 
     <button type="submit"
             ui-sref="{{ vm.previousState }}"

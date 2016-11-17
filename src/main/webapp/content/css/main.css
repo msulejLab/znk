@@ -337,3 +337,7 @@ ui bootstrap tweaks
     width: 100%;
     resize: none;
 }
+
+.self-account {
+    background-color: #fff7cd;
+}
