@@ -26,10 +26,10 @@ public class ConsultationMapper {
         }
 
         ConsultationDTO consultationDTO = new ConsultationDTO();
-
         consultationDTO.setTeacherLogin( consultationTeacherLogin( consultation ) );
         consultationDTO.setTeacherId( consultationTeacherId( consultation ) );
         consultationDTO.setId( consultation.getId() );
+        consultationDTO.setDescription(consultation.getDescription());
         consultationDTO.setDateTime( consultation.getDateTime().toString() );
         consultationDTO.setCancelled( consultation.isCancelled() );
         consultationDTO.setRegisteredStudents( userSetToUserDTOSet( consultation.getRegisteredStudents() ) );
@@ -61,6 +61,7 @@ public class ConsultationMapper {
 
         consultation.setTeacher( userMapper.userFromId( consultationDTO.getTeacherId() ) );
         consultation.setId( consultationDTO.getId() );
+        consultation.setDescription(consultationDTO.getDescription());
         consultation.setDateTime(ZonedDateTime.now());
         consultation.setCancelled( consultationDTO.getCancelled() );
         consultation.setRegisteredStudents( userDTOSetToUserSet( consultationDTO.getRegisteredStudents() ) );
