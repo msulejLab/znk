@@ -2,7 +2,7 @@ package pl.lab.znk.web.rest;
 
 import pl.lab.znk.security.jwt.JWTConfigurer;
 import pl.lab.znk.security.jwt.TokenProvider;
-import pl.lab.znk.web.rest.vm.LoginVMM;
+import pl.lab.znk.web.rest.vm.LoginVM;
 
 import java.util.Collections;
 
@@ -32,15 +32,15 @@ public class UserJWTController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<?> authorize(@Valid @RequestBody LoginVMM loginVMM, HttpServletResponse response) {
+    public ResponseEntity<?> authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(loginVMM.getUsername(), loginVMM.getPassword());
+            new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
 
         try {
             Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            boolean rememberMe = (loginVMM.isRememberMe() == null) ? false : loginVMM.isRememberMe();
+            boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
             return ResponseEntity.ok(new JWTToken(jwt));
