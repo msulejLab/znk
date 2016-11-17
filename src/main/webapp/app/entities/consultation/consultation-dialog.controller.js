@@ -5,9 +5,9 @@
         .module('znkApp')
         .controller('ConsultationDialogController', ConsultationDialogController);
 
-    ConsultationDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Consultation', 'User', 'Principal'];
+    ConsultationDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Consultation', 'User'];
 
-    function ConsultationDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Consultation, User, Principal) {
+    function ConsultationDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Consultation, User) {
         var vm = this;
 
         vm.consultation = entity;
