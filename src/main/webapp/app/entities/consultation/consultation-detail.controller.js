@@ -30,7 +30,7 @@
         });
 
         function bookIn() {
-            $http.post('/api/consultations/' + vm.consultation.id + '/book/' + vm.account.id)
+            $http.post('/api/consultations/' + vm.consultation.id + '/book/')
                 .then(function (response) {
                     vm.consultation = response.data;
                     vm.success = 'You have booked in to consultations';
@@ -42,7 +42,7 @@
         }
 
         function bookOut() {
-            $http.post('/api/consultations/' + vm.consultation.id + '/unBook/' + vm.account.id)
+            $http.post('/api/consultations/' + vm.consultation.id + '/unBook/')
                 .then(function (response) {
                     vm.consultation = response.data;
                     vm.success = 'You have booked out from consultations';

@@ -126,7 +126,7 @@ public class ZnkApp {
             userRepository.save(teacher);
 
             User student = new User();
-            student.setAuthorities(new HashSet<>(Arrays.asList(studentAuth, studentAuth)));
+            student.setAuthorities(new HashSet<>(Arrays.asList(userAuth, studentAuth)));
             student.setLogin("student");
             student.setPassword("$2a$10$81A8zUpEgta4NvaG1Eqv5ua/WBp99vFxdVW8ky0A3MeaplcJVFSbC");
             student.setEmail("student@edu.p.lodz.pl");

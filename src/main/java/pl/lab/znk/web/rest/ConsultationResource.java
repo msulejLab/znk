@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.lab.znk.domain.User;
 import pl.lab.znk.service.ConsultationService;
+import pl.lab.znk.service.UserService;
 import pl.lab.znk.service.dto.ConsultationDTO;
 import pl.lab.znk.web.rest.util.HeaderUtil;
 import pl.lab.znk.web.rest.util.PaginationUtil;
@@ -33,6 +35,9 @@ public class ConsultationResource {
     @Inject
     private ConsultationService consultationService;
 
+    @Inject
+    private UserService userService;
+
     @RequestMapping(value = "/consultations/{id}/cancel",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,12 +50,13 @@ public class ConsultationResource {
                 .body(result);
     }
 
-    @RequestMapping(value = "/consultations/{id}/book/{studentId}",
+    @RequestMapping(value = "/consultations/{consultationId}/book/",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable(name = "id") Long consultationId,
-                                                            @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
+    public ResponseEntity<ConsultationDTO> bookConsultation(@PathVariable Long consultationId) throws URISyntaxException{
+        User loggedUser = userService.getCurrentUser();
+        Long studentId = loggedUser.getId();
         log.debug("REST request to book Consultation: {} by student id: {}", consultationId, studentId);
         ConsultationDTO result = consultationService.bookConsultation(consultationId, studentId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "bookBy/" + studentId))
@@ -58,12 +64,13 @@ public class ConsultationResource {
                 .body(result);
     }
 
-    @RequestMapping(value = "/consultations/{id}/unBook/{studentId}",
+    @RequestMapping(value = "/consultations/{consultationId}/unBook/",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable(name = "id") Long consultationId,
-                                                              @PathVariable(name = "studentId") Long studentId) throws URISyntaxException{
+    public ResponseEntity<ConsultationDTO> unBookConsultation(@PathVariable Long consultationId) throws URISyntaxException{
+        User loggedUser = userService.getCurrentUser();
+        Long studentId = loggedUser.getId();
         log.debug("REST request to unBook Consultation: {} by student id: {}", consultationId, studentId);
         ConsultationDTO result = consultationService.unBookConsultation(consultationId, studentId);
         return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "bookBy/" + studentId))

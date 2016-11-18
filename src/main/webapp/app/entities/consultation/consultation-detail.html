@@ -41,7 +41,7 @@
     </div>
     <div class="clearfix"></div>
 
-    <div style="margin-bottom: 40px;" ng-switch="vm.isBookedIn()">
+    <div style="margin-bottom: 40px;" ng-switch="vm.isBookedIn()" has-authority="ROLE_STUDENT">
         <button ng-switch-when="false" type="button" ng-click="vm.bookIn()" class="btn btn-success">Book in</button>
         <button ng-switch-when="true" type="button" ng-click="vm.bookOut()" class="btn btn-danger">Book out</button>
     </div>
