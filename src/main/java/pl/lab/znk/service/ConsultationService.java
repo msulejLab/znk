@@ -86,12 +86,22 @@ public class ConsultationService {
      * @param consultationDTO the entity to save
      * @return the persisted entity
      */
-    public ConsultationDTO save(ConsultationDTO consultationDTO) {
+    public ConsultationDTO create(ConsultationDTO consultationDTO) {
         log.debug("Request to save Consultation : {}", consultationDTO);
         Consultation consultation = consultationMapper.consultationDTOToConsultation(consultationDTO);
         consultation = consultationRepository.save(consultation);
         ConsultationDTO result = consultationMapper.consultationToConsultationDTO(consultation);
         return result;
+    }
+
+    public ConsultationDTO update(ConsultationDTO consultationDTO) {
+        Consultation existingConsultation = consultationRepository.findOne(consultationDTO.getId());
+
+        existingConsultation.setDescription(consultationDTO.getDescription());
+        existingConsultation.setCancelled(consultationDTO.getCancelled());
+
+        Consultation consultation = consultationRepository.save(existingConsultation);
+        return consultationMapper.consultationToConsultationDTO(consultation);
     }
 
     /**

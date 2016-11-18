@@ -87,7 +87,7 @@ public class ConsultationResource {
         if (consultationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("consultation", "idexists", "A new consultation cannot already have an ID")).body(null);
         }
-        ConsultationDTO result = consultationService.save(consultationDTO);
+        ConsultationDTO result = consultationService.create(consultationDTO);
         return ResponseEntity.created(new URI("/api/consultations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("consultation", result.getId().toString()))
             .body(result);
@@ -111,7 +111,7 @@ public class ConsultationResource {
         if (consultationDTO.getId() == null) {
             return createConsultation(consultationDTO);
         }
-        ConsultationDTO result = consultationService.save(consultationDTO);
+        ConsultationDTO result = consultationService.update(consultationDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("consultation", consultationDTO.getId().toString()))
             .body(result);
