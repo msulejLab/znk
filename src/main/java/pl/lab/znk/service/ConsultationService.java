@@ -13,6 +13,7 @@ import pl.lab.znk.service.dto.ConsultationDTO;
 import pl.lab.znk.service.mapper.ConsultationMapper;
 
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
 
 /**
  * Service Implementation for managing Consultation.
@@ -99,6 +100,7 @@ public class ConsultationService {
 
         existingConsultation.setDescription(consultationDTO.getDescription());
         existingConsultation.setCancelled(consultationDTO.getCancelled());
+        existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
 
         Consultation consultation = consultationRepository.save(existingConsultation);
         return consultationMapper.consultationToConsultationDTO(consultation);
