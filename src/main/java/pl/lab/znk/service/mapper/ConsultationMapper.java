@@ -1,10 +1,5 @@
 package pl.lab.znk.service.mapper;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.springframework.stereotype.Component;
 import pl.lab.znk.domain.Consultation;
 import pl.lab.znk.domain.User;
@@ -12,6 +7,11 @@ import pl.lab.znk.service.dto.ConsultationDTO;
 import pl.lab.znk.service.dto.UserDTO;
 
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class ConsultationMapper {
@@ -62,7 +62,7 @@ public class ConsultationMapper {
         consultation.setTeacher( userMapper.userFromId( consultationDTO.getTeacherId() ) );
         consultation.setId( consultationDTO.getId() );
         consultation.setDescription(consultationDTO.getDescription());
-        consultation.setDateTime(ZonedDateTime.now());
+        consultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
         consultation.setCancelled( consultationDTO.getCancelled() );
         consultation.setRegisteredStudents( userDTOSetToUserSet( consultationDTO.getRegisteredStudents() ) );
 
