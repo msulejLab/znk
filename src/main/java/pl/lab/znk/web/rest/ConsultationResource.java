@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.lab.znk.domain.Consultation;
 import pl.lab.znk.domain.User;
 import pl.lab.znk.service.ConsultationService;
 import pl.lab.znk.service.UserService;
@@ -177,6 +178,11 @@ public class ConsultationResource {
         log.debug("REST request to delete Consultation : {}", id);
         consultationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("consultation", id.toString())).build();
+    }
+
+    @RequestMapping(value = "/consultations/teacher/{teacherId}", method = RequestMethod.GET)
+    public ResponseEntity<List<ConsultationDTO>> getConsultationsByTeacher(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(consultationService.getTeacherConsultations(teacherId));
     }
 
 }
