@@ -59,7 +59,7 @@ public class DummyDataInitializer {
             Consultation consultation5 = createConsultation(teacher3, "Calkiem inny opis", 241, student, student2, student3);
 
             Arrays.asList(consultation1, consultation2, consultation3, consultation4, consultation5)
-            .forEach(c -> consultationRepository.save(c));
+                .forEach(c -> consultationRepository.save(c));
         };
     }
 

@@ -148,4 +148,9 @@ public class ConsultationService {
         List<Consultation> consultations = consultationRepository.findByTeacher_id(teacherId);
         return consultationMapper.consultationsToConsultationDTOs(consultations);
     }
+
+    public List<ConsultationDTO> getStudentConsultations(Long studentId) {
+        List<Consultation> consultations = consultationRepository.findByIdInRegisteredStudents(studentId);
+        return consultationMapper.consultationsToConsultationDTOs(consultations);
+    }
 }

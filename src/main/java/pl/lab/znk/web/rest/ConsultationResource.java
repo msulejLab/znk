@@ -185,4 +185,9 @@ public class ConsultationResource {
         return ResponseEntity.ok(consultationService.getTeacherConsultations(teacherId));
     }
 
+    @RequestMapping(value = "/consultations/student/{studentId}", method = RequestMethod.GET)
+    public ResponseEntity<List<ConsultationDTO>> getConsultationsWithSignedStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(consultationService.getStudentConsultations(studentId));
+    }
+
 }
