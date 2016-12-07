@@ -144,9 +144,19 @@ public class UserResource {
             .body(new ManagedUserVM(userService.getUserWithAuthorities(managedUserVM.getId())));
     }
 
+    @RequestMapping(value = "/teachers", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getTeachers() {
+        return ResponseEntity.ok(userRepository.findByAuthorities_name(AuthoritiesConstants.TEACHER));
+    }
+
+    @RequestMapping(value = "/students", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getStudents() {
+        return ResponseEntity.ok(userRepository.findByAuthorities_name(AuthoritiesConstants.STUDENT));
+    }
+
     /**
      * GET  /users : get all users.
-     * 
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      * @throws URISyntaxException if the pagination headers couldn't be generated
@@ -199,4 +209,5 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "A user is deleted with identifier " + login, login)).build();
     }
+
 }

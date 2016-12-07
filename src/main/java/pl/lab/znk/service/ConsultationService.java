@@ -14,6 +14,7 @@ import pl.lab.znk.service.mapper.ConsultationMapper;
 
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * Service Implementation for managing Consultation.
@@ -141,5 +142,15 @@ public class ConsultationService {
     public void delete(Long id) {
         log.debug("Request to delete Consultation : {}", id);
         consultationRepository.delete(id);
+    }
+
+    public List<ConsultationDTO> getTeacherConsultations(Long teacherId) {
+        List<Consultation> consultations = consultationRepository.findByTeacher_id(teacherId);
+        return consultationMapper.consultationsToConsultationDTOs(consultations);
+    }
+
+    public List<ConsultationDTO> getStudentConsultations(Long studentId) {
+        List<Consultation> consultations = consultationRepository.findByIdInRegisteredStudents(studentId);
+        return consultationMapper.consultationsToConsultationDTOs(consultations);
     }
 }

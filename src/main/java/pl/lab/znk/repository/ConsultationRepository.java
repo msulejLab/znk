@@ -22,4 +22,8 @@ public interface ConsultationRepository extends JpaRepository<Consultation,Long>
     @Query("select consultation from Consultation consultation left join fetch consultation.registeredStudents where consultation.id =:id")
     Consultation findOneWithEagerRelationships(@Param("id") Long id);
 
+    List<Consultation> findByTeacher_id(Long teacherId);
+
+    @Query("select c from Consultation c join c.registeredStudents rs where rs.id = :studentId")
+    List<Consultation> findByIdInRegisteredStudents(@Param("studentId") Long studentId);
 }

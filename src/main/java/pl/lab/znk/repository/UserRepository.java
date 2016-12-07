@@ -28,6 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneById(Long userId);
 
+    List<User> findByAuthorities_name(String name);
+
     @Query(value = "select distinct user from User user left join fetch user.authorities",
         countQuery = "select count(user) from User user")
     Page<User> findAllWithAuthorities(Pageable pageable);
