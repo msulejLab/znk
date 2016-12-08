@@ -61,7 +61,7 @@
         <span class="hidden-xs hidden-sm"> Edit</span>
     </button>
 
-    <button type="button" class="btn btn-danger" has-authority="ROLE_TEACHER" disabled="{{if(vm.consultation.cancelled)}}" ng-click="vm.makeCancel()">
+    <button type="button" class="btn btn-danger" has-authority="ROLE_TEACHER" ng-disabled="vm.consultation.cancelled" ng-click="vm.makeCancel()">
         <span class="glyphicon glyphicon-backward"></span>
         <span class="hidden-xs hidden-sm"> Cancel</span>
     </button>
