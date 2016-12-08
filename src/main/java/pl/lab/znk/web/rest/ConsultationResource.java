@@ -42,13 +42,10 @@ public class ConsultationResource {
     @RequestMapping(value = "/consultations/{id}/cancel",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
     public ResponseEntity<ConsultationDTO> makeCancelled(@PathVariable(name = "id") Long consultationId) throws URISyntaxException {
         log.debug("REST request to cancel Consultation: {}", consultationId);
         ConsultationDTO result = consultationService.makeCancelled(consultationId);
-        return ResponseEntity.created(new URI("/api/consultations/" + consultationId + "/cancel"))
-                .headers(HeaderUtil.createEntityCreationAlert("consultation", result.getId().toString()))
-                .body(result);
+        return ResponseEntity.ok(result);
     }
 
     @RequestMapping(value = "/consultations/{consultationId}/book/",

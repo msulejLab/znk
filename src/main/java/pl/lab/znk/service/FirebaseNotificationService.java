@@ -49,9 +49,12 @@ public class FirebaseNotificationService implements NotificationService {
 
     @Override
     public void notifyUser(User user, Notification notification) {
-        String userToken = getUserToken(user);
-        JsonObject bodyObject = makeRequestObject(notification, userToken);
-        doHttpRequest(bodyObject);
+        Optional
+            .ofNullable(getUserToken(user))
+            .ifPresent(token -> {
+                JsonObject bodyObject = makeRequestObject(notification, token.getToken());
+                doHttpRequest(bodyObject);
+            });
     }
 
     @Override
@@ -125,8 +128,8 @@ public class FirebaseNotificationService implements NotificationService {
         }
     }
 
-    private String getUserToken(User user){
-        return userTokenRepository.findByUser_id(user.getId()).getToken();
+    private UserToken getUserToken(User user){
+        return userTokenRepository.findByUser_id(user.getId());
 //        return "eH3mBZNWZ2w:APA91bHN7ILHpseLhkpNT_AJqyY1xkKCWhChg4tCMi2BfUyKdTND8Q0jm59ljup0MaggqI4Nc4iTu9drf62ENbxd9lNllWOotCQbLZeHRn8MA4GDeTix6Io7q0i1YdVjtO5gZHOPynYP";
     }
 }
