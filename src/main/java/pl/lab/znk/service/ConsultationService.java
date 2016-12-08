@@ -1,5 +1,6 @@
 package pl.lab.znk.service;
 
+import pl.lab.znk.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import pl.lab.znk.service.mapper.ConsultationMapper;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Consultation.
@@ -108,9 +110,20 @@ public class ConsultationService {
     public ConsultationDTO update(ConsultationDTO consultationDTO) {
         Consultation existingConsultation = consultationRepository.findOne(consultationDTO.getId());
 
-        existingConsultation.setDescription(consultationDTO.getDescription());
-        existingConsultation.setCancelled(consultationDTO.getCancelled());
-        existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
+        Optional
+            .ofNullable(consultationRepository.findOne(consultationDTO.getId()))
+            .orElseThrow(() -> new NotFoundException("Consultation with id " + consultationDTO.getId() + " was not found"));
+
+        Optional
+            .ofNullable(consultationDTO.getAddress())
+            .ifPresent(address -> existingConsultation.setAddress(address));
+        Optional
+            .ofNullable(consultationDTO.getDateTime())
+            .ifPresent(dateTime -> existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime())));
+        Optional
+            .ofNullable(consultationDTO.getDescription())
+            .ifPresent(description -> existingConsultation.setDescription(description));
+
 
         Consultation consultation = consultationRepository.save(existingConsultation);
         return consultationMapper.consultationToConsultationDTO(consultation);

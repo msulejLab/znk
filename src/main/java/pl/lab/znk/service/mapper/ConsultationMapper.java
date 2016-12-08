@@ -32,6 +32,7 @@ public class ConsultationMapper {
         consultationDTO.setDescription(consultation.getDescription());
         consultationDTO.setDateTime( consultation.getDateTime().toString() );
         consultationDTO.setCancelled( consultation.isCancelled() );
+        consultationDTO.setAddress(consultation.getAddress());
         consultationDTO.setRegisteredStudents( userSetToUserDTOSet( consultation.getRegisteredStudents() ) );
 
         return consultationDTO;
@@ -64,6 +65,7 @@ public class ConsultationMapper {
         consultation.setDescription(consultationDTO.getDescription());
         consultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
         consultation.setCancelled( consultationDTO.getCancelled() );
+        consultation.setAddress(consultationDTO.getAddress());
         consultation.setRegisteredStudents( userDTOSetToUserSet( consultationDTO.getRegisteredStudents() ) );
 
         return consultation;

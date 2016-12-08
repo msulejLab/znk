@@ -1,5 +1,6 @@
 package pl.lab.znk.web.rest;
 
+import pl.lab.znk.exception.NotFoundException;
 import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.lab.znk.domain.Consultation;
 import pl.lab.znk.domain.User;
 import pl.lab.znk.service.ConsultationService;
 import pl.lab.znk.service.UserService;
@@ -187,4 +187,8 @@ public class ConsultationResource {
         return ResponseEntity.ok(consultationService.getStudentConsultations(studentId));
     }
 
+    @ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<?> handleNotFoundException() {
+        return ResponseEntity.notFound().build();
+    }
 }
