@@ -31,7 +31,8 @@
                     <td>{{consultation.dateTime | date:'medium'}}</td>
                     <td>{{consultation.cancelled}}</td>
                     <td>
-                        {{consultation.teacherLogin}}
+                        {{vm.teacher}}
+                        {{vm.getName(vm.teacher)}}
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
@@ -41,13 +42,13 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-xs hidden-sm"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_ADMIN" type="submit"
                                     ui-sref="consultation.edit({id:consultation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_ADMIN" type="submit"
                                     ui-sref="consultation.delete({id:consultation.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>

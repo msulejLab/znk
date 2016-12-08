@@ -18,7 +18,7 @@
         </dd>
         <dt><span>Teacher</span></dt>
         <dd>
-            {{vm.teacher.firstName}} {{vm.teacher.lastName}}
+            {{vm.getName(vm.teacher)}}
         </dd>
         <dt><span>Address</span></dt>
         <dd>
@@ -29,7 +29,7 @@
             <ul class="list-group">
                 <li class="list-group-item" ng-class="student.login === vm.account.login? 'self-account' : ''"
                     ng-repeat="student in vm.consultation.registeredStudents">
-                    {{student.firstName}} {{student.lastName}}
+                    {{vm.getName(student)}}
                 </li>
             </ul>
         </dd>
