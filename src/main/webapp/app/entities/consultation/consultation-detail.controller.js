@@ -16,6 +16,8 @@
         vm.error = null;
         vm.success = null;
 
+        vm.teacher = User.get({login:entity.teacherLogin});
+
         vm.bookIn = bookIn;
         vm.bookOut = bookOut;
         vm.isBookedIn = isBookedIn;
