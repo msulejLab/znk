@@ -19,6 +19,7 @@
         vm.bookIn = bookIn;
         vm.bookOut = bookOut;
         vm.isBookedIn = isBookedIn;
+        vm.makeCancel = makeCancel;
 
         var unsubscribe = $rootScope.$on('znkApp:consultationUpdate', function(event, result) {
             vm.consultation = result;
@@ -61,6 +62,19 @@
             }
 
             return false;
+        }
+
+        function makeCancel() {
+            console.log('idzie cancel');
+            $http.post('/api/consultations/' + vm.consultation.id + '/cancel')
+                .then(function (response) {
+                    vm.consultation.cancelled = true;
+                    vm.success = 'You cancelled the consultation';
+                })
+                .catch(function (rsponse) {
+                    vm.error = 'Error while trying to cancel consultation';
+                    console.log(vm.error);
+                })
         }
     }
 })();
