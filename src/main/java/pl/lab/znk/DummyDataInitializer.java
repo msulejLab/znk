@@ -43,8 +43,11 @@ public class DummyDataInitializer {
             User admin = createUser("admin", "admin", "admin@localhost", ADMIN_AUTHORITY, USER_AUTHORITY);
             User user = createUser("user", "user", "user@localhost", USER_AUTHORITY);
             User teacher = createUser("teacher", "teacher", "teacher@p.lodz.pl", "Anna", "Kowalska", USER_AUTHORITY, TEACHER_AUTHORITY);
+            teacher.setAddress("Weeia pok132");
             User teacher2 = createUser("teacher2", "teacher2", "pnowak@p.lodz.pl", "Piotr", "Nowak", USER_AUTHORITY, TEACHER_AUTHORITY);
+            teacher2.setAddress("FTIMS A7 pok37");
             User teacher3 = createUser("teacher3", "teacher3", "mryniec@p.lodz.pl", "Marian", "Ryniec", USER_AUTHORITY, TEACHER_AUTHORITY);
+            teacher3.setAddress("MECH A2 pok201");
             User student = createUser("student", "student", "student@edu.p.lodz.pl", "Agata", "Wygnaniec", USER_AUTHORITY, STUDENT_AUTHORITY);
             User student2 = createUser("student2", "student2", "tnowicki@edu.p.lodz.pl", "Tomasz", "Nowicki", USER_AUTHORITY, STUDENT_AUTHORITY);
             User student3 = createUser("student3", "student3", "hkowalik@edu.p.lodz.pl", "Halina", "Kowalik", USER_AUTHORITY, STUDENT_AUTHORITY);
@@ -53,10 +56,15 @@ public class DummyDataInitializer {
                 .forEach(u -> userRepository.save(u));
 
             Consultation consultation1 = createConsultation(teacher, "Przykladowy opis");
+            consultation1.setAddress(teacher.getAddress());
             Consultation consultation2 = createConsultation(teacher2, "Inny przykladowy opis", 200, student, student2);
+            consultation2.setAddress(teacher2.getAddress());
             Consultation consultation3 = createConsultation(teacher2, "Jeszcze inny przykladowy opis", 10, student2);
+            consultation3.setAddress(teacher2.getAddress());
             Consultation consultation4 = createConsultation(teacher, "Informacja dla studentow", 321, student2, student3);
+            consultation4.setAddress(teacher.getAddress());
             Consultation consultation5 = createConsultation(teacher3, "Calkiem inny opis", 241, student, student2, student3);
+            consultation5.setAddress(teacher3.getAddress());
 
             Arrays.asList(consultation1, consultation2, consultation3, consultation4, consultation5)
                 .forEach(c -> consultationRepository.save(c));
