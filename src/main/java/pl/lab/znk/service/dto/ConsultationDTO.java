@@ -24,6 +24,8 @@ public class ConsultationDTO implements Serializable {
 
     private String teacherLogin;
 
+    private String teacherName;
+
     private Set<UserDTO> registeredStudents = new HashSet<>();
 
     private String address;
@@ -93,6 +95,14 @@ public class ConsultationDTO implements Serializable {
         this.address = address;
     }
 
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
     @Override
     public String toString() {
         return "ConsultationDTO{" +
@@ -102,6 +112,7 @@ public class ConsultationDTO implements Serializable {
             ", cancelled=" + cancelled +
             ", teacherId=" + teacherId +
             ", teacherLogin='" + teacherLogin + '\'' +
+            ", teacherName='" + teacherName + '\'' +
             ", registeredStudents=" + registeredStudents +
             ", address='" + address + '\'' +
             '}';
