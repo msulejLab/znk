@@ -15,13 +15,21 @@
         vm.account = null;
         vm.error = null;
         vm.success = null;
+        vm.teacher = {};
 
-        vm.teacher = User.get({login:entity.teacherLogin});
+        loadTeacher();
+
+        function loadTeacher() {
+            vm.teacher = User.get({login:entity.teacherLogin}, function (response) {
+                vm.teacher = response;
+            })
+        }
 
         vm.bookIn = bookIn;
         vm.bookOut = bookOut;
         vm.isBookedIn = isBookedIn;
         vm.makeCancel = makeCancel;
+        vm.getName = getName;
 
         var unsubscribe = $rootScope.$on('znkApp:consultationUpdate', function(event, result) {
             vm.consultation = result;
@@ -77,6 +85,14 @@
                     vm.error = 'Error while trying to cancel consultation';
                     console.log(vm.error);
                 })
+        }
+
+        function getName(person) {
+            if (person.firstName === null || person.firstName === undefined || person.lastName === null || person.lastName === undefined) {
+                return person.login;
+            } else {
+                return person.firstName + ' ' + person.lastName;
+            }
         }
     }
 })();
