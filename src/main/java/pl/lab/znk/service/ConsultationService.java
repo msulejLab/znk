@@ -114,16 +114,31 @@ public class ConsultationService {
             .ofNullable(consultationRepository.findOne(consultationDTO.getId()))
             .orElseThrow(() -> new NotFoundException("Consultation with id " + consultationDTO.getId() + " was not found"));
 
+        final boolean[] dateChanged = { false };
+        final boolean[] addressChanged = { false };
         Optional
             .ofNullable(consultationDTO.getAddress())
-            .ifPresent(address -> existingConsultation.setAddress(address));
+            .ifPresent(address -> {
+                if(!existingConsultation.getAddress().equals(address)){
+                    addressChanged[0] = true;
+                }
+                existingConsultation.setAddress(address);
+            });
         Optional
             .ofNullable(consultationDTO.getDateTime())
-            .ifPresent(dateTime -> existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime())));
+            .ifPresent(dateTime -> {
+                if(!existingConsultation.getDateTime().equals(ZonedDateTime.parse(consultationDTO.getDateTime()))){
+                    dateChanged[0] = true;
+                }
+                existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
+            });
         Optional
             .ofNullable(consultationDTO.getDescription())
             .ifPresent(description -> existingConsultation.setDescription(description));
 
+        if (existingConsultation.getRegisteredStudents().size() > 0) {
+            sendConsultationUpdateNotification(existingConsultation, dateChanged[0], addressChanged[0]);
+        }
 
         Consultation consultation = consultationRepository.save(existingConsultation);
         return consultationMapper.consultationToConsultationDTO(consultation);
@@ -176,14 +191,26 @@ public class ConsultationService {
         return consultationMapper.consultationsToConsultationDTOs(consultations);
     }
 
-    private void sendCancelledConsultationNotification(Consultation consultation) {
-        String teacherName = null;
-        User teacher = consultation.getTeacher();
-        if (hasFullName(teacher)) {
-            teacherName = teacher.getFirstName() + " " + teacher.getLastName();
-        } else {
-            teacherName = teacher.getLogin();
+    private void sendConsultationUpdateNotification(Consultation consultation, boolean dateChanged, boolean addressChanged){
+        String teacherName = getTeacherName(consultation);
+
+        String title = "";
+        if(addressChanged & dateChanged){
+            title = "Date and address";
+        }else if(addressChanged & !dateChanged){
+            title = "Address";
+        }else if(!addressChanged & dateChanged){
+            title = "Date";
         }
+        title += " of consultation have been updated";
+
+        String content = "Consultations that you have signed in have been updated, date: " + consultation.getDateTime() +
+            ", teacher: " + teacherName + ", address: " + consultation.getAddress();
+        notificationService.notifyUsers(consultation.getRegisteredStudents(), new Notification(title, content));
+    }
+
+    private void sendCancelledConsultationNotification(Consultation consultation) {
+        String teacherName = getTeacherName(consultation);
 
         String title = "Consultations have been cancelled";
         String content = "Consultations that you have signed in have been cancelled, date: " + consultation.getDateTime() +
@@ -191,7 +218,18 @@ public class ConsultationService {
         notificationService.notifyUsers(consultation.getRegisteredStudents(), new Notification(title, content));
     }
 
+    private String getTeacherName(Consultation consultation) {
+        String teacherName = null;
+        User teacher = consultation.getTeacher();
+        if (hasFullName(teacher)) {
+            teacherName = teacher.getFirstName() + " " + teacher.getLastName();
+        } else {
+            teacherName = teacher.getLogin();
+        }
+        return teacherName;
+    }
+
     private boolean hasFullName(User user) {
-        return user.getFirstName() == null || user.getLastName() == null;
+        return user.getFirstName() != null || user.getLastName() != null;
     }
 }
