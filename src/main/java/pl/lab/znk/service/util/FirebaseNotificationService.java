@@ -8,15 +8,18 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.lab.znk.domain.Notification;
 import pl.lab.znk.domain.User;
 import pl.lab.znk.domain.UserToken;
+import pl.lab.znk.repository.UserRepository;
 import pl.lab.znk.repository.UserTokenRepository;
 import pl.lab.znk.service.NotificationInterface;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class FirebaseNotificationService implements NotificationInterface {
@@ -30,9 +33,12 @@ public class FirebaseNotificationService implements NotificationInterface {
 
     private UserTokenRepository userTokenRepository;
 
+    private UserRepository userRepository;
+
     @Autowired
-    public FirebaseNotificationService(UserTokenRepository userTokenRepository) {
+    public FirebaseNotificationService(UserTokenRepository userTokenRepository, UserRepository userRepository) {
         this.userTokenRepository = userTokenRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -51,15 +57,19 @@ public class FirebaseNotificationService implements NotificationInterface {
 
     @Override
     public void storeToken(User user, UserToken userToken) {
-        UserToken existingToken = userTokenRepository.findByUser_id(user.getId());
-        if (existingToken != null) {
-            userTokenRepository.delete(existingToken);
-        }
+        Optional
+            .ofNullable(userTokenRepository.findByUser_id(user.getId()))
+            .ifPresent(token -> userTokenRepository.delete(token));
+
         userTokenRepository.save(userToken);
     }
 
     @Override
-    public void storeToken(User user, String token) {
+    public void storeToken(Long userId, String token) {
+        User user = Optional
+            .ofNullable(userRepository.findOne(userId))
+            .orElseThrow(() -> new UsernameNotFoundException("User with id " + userId + " was not found"));
+
         storeToken(user, new UserToken(user, token));
     }
 

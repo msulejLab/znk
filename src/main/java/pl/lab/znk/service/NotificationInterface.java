@@ -14,5 +14,5 @@ public interface NotificationInterface {
 
     void storeToken(User user, UserToken userToken);
 
-    void storeToken(User user, String token);
+    void storeToken(Long userId, String token);
 }
