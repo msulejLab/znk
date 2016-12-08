@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.lab.znk.domain.Notification;
 import pl.lab.znk.domain.User;
+import pl.lab.znk.domain.UserToken;
 import pl.lab.znk.repository.UserTokenRepository;
 import pl.lab.znk.service.NotificationInterface;
 
@@ -48,6 +49,19 @@ public class FirebaseNotificationService implements NotificationInterface {
         doHttpRequest(bodyObject);
     }
 
+    @Override
+    public void storeToken(User user, UserToken userToken) {
+        UserToken existingToken = userTokenRepository.findByUser_id(user.getId());
+        if (existingToken != null) {
+            userTokenRepository.delete(existingToken);
+        }
+        userTokenRepository.save(userToken);
+    }
+
+    @Override
+    public void storeToken(User user, String token) {
+        storeToken(user, new UserToken(user, token));
+    }
 
     private JsonObject makeRequestObject(Notification notification, String userToken) {
         JsonObject bodyObject = makeBody(userToken);
