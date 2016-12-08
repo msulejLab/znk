@@ -1,17 +1,6 @@
 package pl.lab.znk.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-
-import pl.lab.znk.domain.User;
-import pl.lab.znk.repository.UserRepository;
-import pl.lab.znk.security.SecurityUtils;
-import pl.lab.znk.service.MailService;
-import pl.lab.znk.service.UserService;
-import pl.lab.znk.service.dto.UserDTO;
-import pl.lab.znk.web.rest.vm.KeyAndPasswordVM;
-import pl.lab.znk.web.rest.vm.ManagedUserVM;
-import pl.lab.znk.web.rest.util.HeaderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +9,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.lab.znk.domain.User;
+import pl.lab.znk.repository.UserRepository;
+import pl.lab.znk.security.SecurityUtils;
+import pl.lab.znk.service.MailService;
+import pl.lab.znk.service.UserService;
+import pl.lab.znk.service.dto.UserDTO;
+import pl.lab.znk.web.rest.util.HeaderUtil;
+import pl.lab.znk.web.rest.vm.KeyAndPasswordVM;
+import pl.lab.znk.web.rest.vm.ManagedUserVM;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
