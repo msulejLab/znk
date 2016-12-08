@@ -28,6 +28,7 @@ public class ConsultationMapper {
         ConsultationDTO consultationDTO = new ConsultationDTO();
         consultationDTO.setTeacherLogin( consultationTeacherLogin( consultation ) );
         consultationDTO.setTeacherId( consultationTeacherId( consultation ) );
+        consultationDTO.setTeacherName(createTeacherName(consultation.getTeacher()));
         consultationDTO.setId( consultation.getId() );
         consultationDTO.setDescription(consultation.getDescription());
         consultationDTO.setDateTime( consultation.getDateTime().toString() );
@@ -36,6 +37,14 @@ public class ConsultationMapper {
         consultationDTO.setRegisteredStudents( userSetToUserDTOSet( consultation.getRegisteredStudents() ) );
 
         return consultationDTO;
+    }
+
+    private String createTeacherName(User teacher) {
+        if (teacher.getFirstName() == null || teacher.getLastName() == null) {
+            return "";
+        }
+
+        return teacher.getFirstName() + " " + teacher.getLastName();
     }
 
 
