@@ -156,7 +156,7 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(String firstName, String lastName, String email, String langKey) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, String address) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
@@ -168,17 +168,18 @@ public class UserService {
     }
 
     public void updateUser(Long id, String login, String firstName, String lastName, String email,
-        boolean activated, String langKey, Set<String> authorities) {
+        boolean activated, String langKey, Set<String> authorities, String address) {
 
         userRepository
             .findOneById(id)
             .ifPresent(u -> {
-                u.setLogin(login);
+                u.setLastName(login);
                 u.setFirstName(firstName);
                 u.setLastName(lastName);
                 u.setEmail(email);
                 u.setActivated(activated);
                 u.setLangKey(langKey);
+                u.setAddress(address);
                 Set<Authority> managedAuthorities = u.getAuthorities();
                 managedAuthorities.clear();
                 authorities.stream().forEach(

@@ -81,6 +81,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
 
+    @Column(name = "address")
+    private String address;
+
     public Long getId() {
         return id;
     }
@@ -178,39 +181,34 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        User user = (User) o;
-
-        if (!login.equals(user.login)) {
-            return false;
-        }
-
-        return true;
+    public boolean isActivated() {
+        return activated;
     }
 
-    @Override
-    public int hashCode() {
-        return login.hashCode();
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
     public String toString() {
         return "User{" +
-            "login='" + login + '\'' +
+            "id=" + id +
+            ", login='" + login + '\'' +
+            ", password='" + password + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", activated='" + activated + '\'' +
+            ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            "}";
+            ", resetKey='" + resetKey + '\'' +
+            ", resetDate=" + resetDate +
+            ", authorities=" + authorities +
+            ", address='" + address + '\'' +
+            '}';
     }
 }
