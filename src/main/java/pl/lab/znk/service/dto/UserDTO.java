@@ -110,6 +110,7 @@ public class UserDTO {
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
             ", authorities=" + authorities +
+            ", address=" + address +
             "}";
     }
 

@@ -10,7 +10,7 @@
         </dd>
         <dt><span>Cancelled</span></dt>
         <dd>
-            <span>{{vm.consultation.cancelled}}</span>
+            <span>{{vm.consultation.cancelled?'YES':'NO'}}</span>
         </dd>
         <dt><span>Description</span></dt>
         <dd>
@@ -18,14 +18,18 @@
         </dd>
         <dt><span>Teacher</span></dt>
         <dd>
-            {{vm.consultation.teacherLogin}}
+            {{vm.teacher.firstName}} {{vm.teacher.lastName}}
+        </dd>
+        <dt><span>Address</span></dt>
+        <dd>
+            {{vm.consultation.address}}
         </dd>
         <dt><span>Registered Students</span></dt>
         <dd>
             <ul class="list-group">
                 <li class="list-group-item" ng-class="student.login === vm.account.login? 'self-account' : ''"
                     ng-repeat="student in vm.consultation.registeredStudents">
-                    {{student.login}}
+                    {{student.firstName}} {{student.lastName}}
                 </li>
             </ul>
         </dd>
@@ -56,4 +60,10 @@
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-xs hidden-sm"> Edit</span>
     </button>
+
+    <button type="button" class="btn btn-danger" has-authority="ROLE_TEACHER" ng-disabled="vm.consultation.cancelled" ng-click="vm.makeCancel()">
+        <span class="glyphicon glyphicon-backward"></span>
+        <span class="hidden-xs hidden-sm"> Cancel</span>
+    </button>
+
 </div>
