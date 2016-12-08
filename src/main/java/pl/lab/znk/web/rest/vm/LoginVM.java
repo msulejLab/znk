@@ -1,7 +1,6 @@
 package pl.lab.znk.web.rest.vm;
 
 import pl.lab.znk.config.Constants;
-import pl.lab.znk.domain.UserToken;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

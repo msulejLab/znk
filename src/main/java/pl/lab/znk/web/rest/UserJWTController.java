@@ -2,9 +2,11 @@ package pl.lab.znk.web.rest;
 
 import pl.lab.znk.security.jwt.JWTConfigurer;
 import pl.lab.znk.security.jwt.TokenProvider;
+import pl.lab.znk.service.NotificationInterface;
 import pl.lab.znk.web.rest.vm.LoginVM;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import com.codahale.metrics.annotation.Timed;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class UserJWTController {
     @Inject
     private AuthenticationManager authenticationManager;
 
+    @Inject
+    private NotificationInterface notificationService;
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<?> authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
@@ -43,6 +48,11 @@ public class UserJWTController {
             boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+            String firebaseToken = loginVM.getFirebaseToken();
+            Optional
+                .ofNullable(firebaseToken)
+                .ifPresent(token -> notificationService.storeToken(loginVM.getUsername(), token));
             return ResponseEntity.ok(new JWTToken(jwt));
         } catch (AuthenticationException exception) {
             return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",exception.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);

@@ -1,4 +1,4 @@
-package pl.lab.znk.service.util;
+package pl.lab.znk.service;
 
 import com.google.gson.JsonObject;
 import org.apache.http.client.methods.HttpPost;
@@ -15,7 +15,6 @@ import pl.lab.znk.domain.User;
 import pl.lab.znk.domain.UserToken;
 import pl.lab.znk.repository.UserRepository;
 import pl.lab.znk.repository.UserTokenRepository;
-import pl.lab.znk.service.NotificationInterface;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -66,9 +65,18 @@ public class FirebaseNotificationService implements NotificationInterface {
 
     @Override
     public void storeToken(Long userId, String token) {
-        User user = Optional
-            .ofNullable(userRepository.findOne(userId))
+        User user = userRepository
+            .findOneById(userId)
             .orElseThrow(() -> new UsernameNotFoundException("User with id " + userId + " was not found"));
+
+        storeToken(user, new UserToken(user, token));
+    }
+
+    @Override
+    public void storeToken(String login, String token) {
+        User user = userRepository
+            .findOneByLogin(login)
+            .orElseThrow(() -> new UsernameNotFoundException("User with login " + login + " was not found"));
 
         storeToken(user, new UserToken(user, token));
     }
