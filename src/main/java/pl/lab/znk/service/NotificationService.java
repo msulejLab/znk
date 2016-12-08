@@ -6,7 +6,7 @@ import pl.lab.znk.domain.UserToken;
 
 import java.util.Collection;
 
-public interface NotificationInterface {
+public interface NotificationService {
 
     void notifyUsers(Collection<User> userCollection, Notification notification);
 

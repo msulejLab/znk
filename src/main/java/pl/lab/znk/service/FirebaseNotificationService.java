@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
-public class FirebaseNotificationService implements NotificationInterface {
+public class FirebaseNotificationService implements NotificationService {
 
     private static final Logger log = LoggerFactory.getLogger(FirebaseNotificationService.class);
 

@@ -2,7 +2,7 @@ package pl.lab.znk.web.rest;
 
 import pl.lab.znk.security.jwt.JWTConfigurer;
 import pl.lab.znk.security.jwt.TokenProvider;
-import pl.lab.znk.service.NotificationInterface;
+import pl.lab.znk.service.NotificationService;
 import pl.lab.znk.web.rest.vm.LoginVM;
 
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class UserJWTController {
     private AuthenticationManager authenticationManager;
 
     @Inject
-    private NotificationInterface notificationService;
+    private NotificationService notificationService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @Timed

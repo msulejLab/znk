@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.lab.znk.domain.Consultation;
+import pl.lab.znk.domain.Notification;
 import pl.lab.znk.domain.User;
 import pl.lab.znk.repository.ConsultationRepository;
 import pl.lab.znk.service.dto.ConsultationDTO;
@@ -34,6 +35,9 @@ public class ConsultationService {
     @Inject
     private UserService userService;
 
+    @Inject
+    private NotificationService notificationService;
+
     /**
      * Cancel consultation
      * @param consultationId consultation id
@@ -45,6 +49,11 @@ public class ConsultationService {
         consultation.setCancelled(true);
         consultation = consultationRepository.save(consultation);
         ConsultationDTO result = consultationMapper.consultationToConsultationDTO(consultation);
+
+        if (consultation.getRegisteredStudents().size() > 0) {
+            sendCancelledConsultationNotification(consultation);
+        }
+
         return result;
     }
 
@@ -152,5 +161,24 @@ public class ConsultationService {
     public List<ConsultationDTO> getStudentConsultations(Long studentId) {
         List<Consultation> consultations = consultationRepository.findByIdInRegisteredStudents(studentId);
         return consultationMapper.consultationsToConsultationDTOs(consultations);
+    }
+
+    private void sendCancelledConsultationNotification(Consultation consultation) {
+        String teacherName = null;
+        User teacher = consultation.getTeacher();
+        if (hasFullName(teacher)) {
+            teacherName = teacher.getFirstName() + " " + teacher.getLastName();
+        } else {
+            teacherName = teacher.getLogin();
+        }
+
+        String title = "Consultations have been cancelled";
+        String content = "Consultations that you have signed in have been cancelled, date: " + consultation.getDateTime() +
+            ", teacher: " + teacherName;
+        notificationService.notifyUsers(consultation.getRegisteredStudents(), new Notification(title, content));
+    }
+
+    private boolean hasFullName(User user) {
+        return user.getFirstName() == null || user.getLastName() == null;
     }
 }
