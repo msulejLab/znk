@@ -28,13 +28,23 @@ public class ConsultationMapper {
         ConsultationDTO consultationDTO = new ConsultationDTO();
         consultationDTO.setTeacherLogin( consultationTeacherLogin( consultation ) );
         consultationDTO.setTeacherId( consultationTeacherId( consultation ) );
+        consultationDTO.setTeacherName(createTeacherName(consultation.getTeacher()));
         consultationDTO.setId( consultation.getId() );
         consultationDTO.setDescription(consultation.getDescription());
         consultationDTO.setDateTime( consultation.getDateTime().toString() );
         consultationDTO.setCancelled( consultation.isCancelled() );
+        consultationDTO.setAddress(consultation.getAddress());
         consultationDTO.setRegisteredStudents( userSetToUserDTOSet( consultation.getRegisteredStudents() ) );
 
         return consultationDTO;
+    }
+
+    private String createTeacherName(User teacher) {
+        if (teacher.getFirstName() == null || teacher.getLastName() == null) {
+            return "";
+        }
+
+        return teacher.getFirstName() + " " + teacher.getLastName();
     }
 
 
@@ -64,6 +74,7 @@ public class ConsultationMapper {
         consultation.setDescription(consultationDTO.getDescription());
         consultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
         consultation.setCancelled( consultationDTO.getCancelled() );
+        consultation.setAddress(consultationDTO.getAddress());
         consultation.setRegisteredStudents( userDTOSetToUserSet( consultationDTO.getRegisteredStudents() ) );
 
         return consultation;

@@ -1,5 +1,6 @@
 package pl.lab.znk.service;
 
+import pl.lab.znk.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.lab.znk.domain.Consultation;
+import pl.lab.znk.domain.Notification;
 import pl.lab.znk.domain.User;
 import pl.lab.znk.repository.ConsultationRepository;
 import pl.lab.znk.service.dto.ConsultationDTO;
@@ -15,6 +17,7 @@ import pl.lab.znk.service.mapper.ConsultationMapper;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Consultation.
@@ -34,6 +37,9 @@ public class ConsultationService {
     @Inject
     private UserService userService;
 
+    @Inject
+    private NotificationService notificationService;
+
     /**
      * Cancel consultation
      * @param consultationId consultation id
@@ -45,6 +51,11 @@ public class ConsultationService {
         consultation.setCancelled(true);
         consultation = consultationRepository.save(consultation);
         ConsultationDTO result = consultationMapper.consultationToConsultationDTO(consultation);
+
+        if (consultation.getRegisteredStudents().size() > 0) {
+            sendCancelledConsultationNotification(consultation);
+        }
+
         return result;
     }
 
@@ -99,9 +110,35 @@ public class ConsultationService {
     public ConsultationDTO update(ConsultationDTO consultationDTO) {
         Consultation existingConsultation = consultationRepository.findOne(consultationDTO.getId());
 
-        existingConsultation.setDescription(consultationDTO.getDescription());
-        existingConsultation.setCancelled(consultationDTO.getCancelled());
-        existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
+        Optional
+            .ofNullable(consultationRepository.findOne(consultationDTO.getId()))
+            .orElseThrow(() -> new NotFoundException("Consultation with id " + consultationDTO.getId() + " was not found"));
+
+        final boolean[] dateChanged = { false };
+        final boolean[] addressChanged = { false };
+        Optional
+            .ofNullable(consultationDTO.getAddress())
+            .ifPresent(address -> {
+                if(!existingConsultation.getAddress().equals(address)){
+                    addressChanged[0] = true;
+                }
+                existingConsultation.setAddress(address);
+            });
+        Optional
+            .ofNullable(consultationDTO.getDateTime())
+            .ifPresent(dateTime -> {
+                if(!existingConsultation.getDateTime().equals(ZonedDateTime.parse(consultationDTO.getDateTime()))){
+                    dateChanged[0] = true;
+                }
+                existingConsultation.setDateTime(ZonedDateTime.parse(consultationDTO.getDateTime()));
+            });
+        Optional
+            .ofNullable(consultationDTO.getDescription())
+            .ifPresent(description -> existingConsultation.setDescription(description));
+
+        if (existingConsultation.getRegisteredStudents().size() > 0) {
+            sendConsultationUpdateNotification(existingConsultation, dateChanged[0], addressChanged[0]);
+        }
 
         Consultation consultation = consultationRepository.save(existingConsultation);
         return consultationMapper.consultationToConsultationDTO(consultation);
@@ -152,5 +189,47 @@ public class ConsultationService {
     public List<ConsultationDTO> getStudentConsultations(Long studentId) {
         List<Consultation> consultations = consultationRepository.findByIdInRegisteredStudents(studentId);
         return consultationMapper.consultationsToConsultationDTOs(consultations);
+    }
+
+    private void sendConsultationUpdateNotification(Consultation consultation, boolean dateChanged, boolean addressChanged){
+        String teacherName = getTeacherName(consultation);
+
+        String title = "";
+        if(addressChanged & dateChanged){
+            title = "Date and address";
+        }else if(addressChanged & !dateChanged){
+            title = "Address";
+        }else if(!addressChanged & dateChanged){
+            title = "Date";
+        }
+        title += " of consultation have been updated";
+
+        String content = "Consultations that you have signed in have been updated, date: " + consultation.getDateTime() +
+            ", teacher: " + teacherName + ", address: " + consultation.getAddress();
+        notificationService.notifyUsers(consultation.getRegisteredStudents(), new Notification(title, content));
+    }
+
+    private void sendCancelledConsultationNotification(Consultation consultation) {
+        String teacherName = getTeacherName(consultation);
+
+        String title = "Consultations have been cancelled";
+        String content = "Consultations that you have signed in have been cancelled, date: " + consultation.getDateTime() +
+            ", teacher: " + teacherName;
+        notificationService.notifyUsers(consultation.getRegisteredStudents(), new Notification(title, content));
+    }
+
+    private String getTeacherName(Consultation consultation) {
+        String teacherName = null;
+        User teacher = consultation.getTeacher();
+        if (hasFullName(teacher)) {
+            teacherName = teacher.getFirstName() + " " + teacher.getLastName();
+        } else {
+            teacherName = teacher.getLogin();
+        }
+        return teacherName;
+    }
+
+    private boolean hasFullName(User user) {
+        return user.getFirstName() != null || user.getLastName() != null;
     }
 }

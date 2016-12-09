@@ -24,7 +24,11 @@ public class ConsultationDTO implements Serializable {
 
     private String teacherLogin;
 
+    private String teacherName;
+
     private Set<UserDTO> registeredStudents = new HashSet<>();
+
+    private String address;
 
     public Long getId() {
         return id;
@@ -83,21 +87,20 @@ public class ConsultationDTO implements Serializable {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ConsultationDTO that = (ConsultationDTO) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(description, that.description) &&
-            Objects.equals(dateTime, that.dateTime) &&
-            Objects.equals(cancelled, that.cancelled) &&
-            Objects.equals(teacherId, that.teacherId);
+    public String getAddress() {
+        return address;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, description, dateTime, cancelled, teacherId);
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     @Override
@@ -109,7 +112,9 @@ public class ConsultationDTO implements Serializable {
             ", cancelled=" + cancelled +
             ", teacherId=" + teacherId +
             ", teacherLogin='" + teacherLogin + '\'' +
+            ", teacherName='" + teacherName + '\'' +
             ", registeredStudents=" + registeredStudents +
+            ", address='" + address + '\'' +
             '}';
     }
 }

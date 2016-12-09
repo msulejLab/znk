@@ -1,6 +1,7 @@
 package pl.lab.znk.web.rest.vm;
 
 import pl.lab.znk.config.Constants;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -20,6 +21,8 @@ public class LoginVM {
     private String password;
 
     private Boolean rememberMe;
+
+    private String firebaseToken;
 
     public String getUsername() {
         return username;
@@ -45,12 +48,25 @@ public class LoginVM {
         this.rememberMe = rememberMe;
     }
 
+    public Boolean getRememberMe() {
+        return rememberMe;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
+    }
+
     @Override
     public String toString() {
         return "LoginVM{" +
-            "password='*****'" +
-            ", username='" + username + '\'' +
+            "username='" + username + '\'' +
+            ", password='" + password + '\'' +
             ", rememberMe=" + rememberMe +
+            ", firebaseToken='" + firebaseToken + '\'' +
             '}';
     }
 }

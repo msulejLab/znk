@@ -30,6 +30,9 @@ public class Consultation implements Serializable {
     @Column(name = "cancelled")
     private Boolean cancelled;
 
+    @Column(name = "address")
+    private String address;
+
     @ManyToOne
     private User teacher;
 
@@ -125,6 +128,14 @@ public class Consultation implements Serializable {
         return cancelled;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "Consultation{" +
@@ -132,6 +143,7 @@ public class Consultation implements Serializable {
             ", description='" + description + '\'' +
             ", dateTime=" + dateTime +
             ", cancelled=" + cancelled +
+            ", address='" + address + '\'' +
             ", teacher=" + teacher +
             ", registeredStudents=" + registeredStudents +
             '}';
@@ -146,12 +158,13 @@ public class Consultation implements Serializable {
             Objects.equals(description, that.description) &&
             Objects.equals(dateTime, that.dateTime) &&
             Objects.equals(cancelled, that.cancelled) &&
+            Objects.equals(address, that.address) &&
             Objects.equals(teacher, that.teacher) &&
             Objects.equals(registeredStudents, that.registeredStudents);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, dateTime, cancelled, teacher, registeredStudents);
+        return Objects.hash(id, description, dateTime, cancelled, address, teacher, registeredStudents);
     }
 }

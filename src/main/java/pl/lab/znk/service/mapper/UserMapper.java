@@ -59,6 +59,7 @@ public class UserMapper {
         user.setEmail( userDTO.getEmail() );
         user.setActivated( userDTO.isActivated() );
         user.setLangKey( userDTO.getLangKey() );
+        user.setAddress(userDTO.getAddress());
         user.setAuthorities( authoritiesFromStrings( userDTO.getAuthorities() ) );
 
         return user;
